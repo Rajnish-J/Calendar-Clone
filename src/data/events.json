@@ -5,14 +5,51 @@
       "date": "2025-02-10",
       "title": "Team Meeting",
       "description": "Discuss project updates.",
-      "color": "#ff4d4d"
+      "color": "#ff4d4d",
+      "startTime": {
+        "hours": "09",
+        "minutes": "00",
+        "period": "AM"
+      },
+      "endTime": {
+        "hours": "10",
+        "minutes": "00",
+        "period": "AM"
+      }
     },
     {
       "id": 2,
-      "date": "2025-02-12",
-      "title": "Lunch with John",
-      "description": "Catch up on work progress.",
-      "color": "#4d79ff"
+      "date": "2025-02-10",
+      "title": "Lunch Break",
+      "description": "Time for lunch.",
+      "color": "#4d94ff",
+      "startTime": {
+        "hours": "12",
+        "minutes": "00",
+        "period": "PM"
+      },
+      "endTime": {
+        "hours": "01",
+        "minutes": "00",
+        "period": "PM"
+      }
+    },
+    {
+      "id": 3,
+      "date": "2025-02-16",
+      "title": "Client Call",
+      "description": "Call with client to finalize details.",
+      "color": "#9810fa",
+      "startTime": {
+        "hours": "03",
+        "minutes": "30",
+        "period": "PM"
+      },
+      "endTime": {
+        "hours": "04",
+        "minutes": "30",
+        "period": "PM"
+      }
     }
   ]
 }

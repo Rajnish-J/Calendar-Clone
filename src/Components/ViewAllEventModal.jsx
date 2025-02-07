@@ -1,6 +1,6 @@
 export default function ViewAllEventsModal({ events, onClose, onDeleteEvent }) {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee] ...">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
         {/* Close Button */}
         <button

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import Calendar from "./Components/Calendar";
+import Calendar from "./components/Calendar";
 import Header from "./Components/Header";
-import Footer from "./Components/Footer";
+import Footer from "./components/Footer";
 import data from "./data/events.json";
 
 export default function App() {
@@ -32,19 +32,12 @@ export default function App() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
-      {/* Header */}
       <Header />
-
-      {/* Main Content */}
-      <main className="flex-1">
-        <Calendar
-          events={events}
-          onAddEvent={addOrUpdateEvent}
-          onDeleteEvent={deleteEvent}
-        />
-      </main>
-
-      {/* Footer */}
+      <Calendar
+        events={events}
+        onAddEvent={addOrUpdateEvent}
+        onDeleteEvent={deleteEvent}
+      />
       <Footer />
     </div>
   );

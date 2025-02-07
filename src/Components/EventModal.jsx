@@ -9,7 +9,9 @@ export default function EventModal({
   events,
 }) {
   const [title, setTitle] = useState(editingEvent?.title || "");
-  const [description, setDescription] = useState(editingEvent?.description || "");
+  const [description, setDescription] = useState(
+    editingEvent?.description || ""
+  );
   const [color, setColor] = useState(editingEvent?.color || "#ff4d4d");
   const [startTime, setStartTime] = useState({
     hours: editingEvent?.startTime?.hours || "12",
@@ -50,13 +52,15 @@ export default function EventModal({
         event.date === selectedDay &&
         ((timeToMinutes(event.startTime) < endMinutes &&
           timeToMinutes(event.endTime) > startMinutes) ||
-         (timeToMinutes(event.startTime) === startMinutes &&
-          timeToMinutes(event.endTime) === endMinutes)) &&
+          (timeToMinutes(event.startTime) === startMinutes &&
+            timeToMinutes(event.endTime) === endMinutes)) &&
         event.id !== editingEvent?.id // Exclude the current event when editing
     );
 
     if (conflictingEvent) {
-      setErrorMessage("There is already an event during this time. Please choose a different time.");
+      setErrorMessage(
+        "There is already an event during this time. Please choose a different time."
+      );
       return;
     }
 
@@ -77,7 +81,7 @@ export default function EventModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee] ...">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
         {/* Close Button */}
         <button
@@ -104,7 +108,9 @@ export default function EventModal({
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Description</label>
+            <label className="block text-sm font-medium mb-1">
+              Description
+            </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -122,7 +128,9 @@ export default function EventModal({
           </div>
           <div className="mb-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Start Time</label>
+              <label className="block text-sm font-medium mb-1">
+                Start Time
+              </label>
               <div className="flex gap-2">
                 <input
                   type="number"
