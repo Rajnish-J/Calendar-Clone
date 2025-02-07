@@ -35,19 +35,57 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
     setViewAllEventsModalOpen(false);
   };
 
+  // Navigate to the previous month
+  const goToPreviousMonth = () => {
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+    );
+  };
+
+  // Navigate to the next month
+  const goToNextMonth = () => {
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
+    );
+  };
+
   return (
     <div className="flex-1 overflow-auto p-4">
       <div className="bg-white shadow-lg rounded-lg p-6 w-full h-full">
-        <h1 className="text-2xl font-bold text-center mb-6">
-          {currentDate.toLocaleString("default", { month: "long", year: "numeric" })}
-        </h1>
-        <div className="grid grid-cols-7 gap-2 mb-6">
+        {/* Month Navigation */}
+        <div className="flex justify-between items-center mb-6">
+          {/* Previous Month Button */}
+          <button
+            onClick={goToPreviousMonth}
+            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+          >
+            ← Previous
+          </button>
+
+          {/* Current Month Header */}
+          <h1 className="text-2xl font-bold text-center">
+            {currentDate.toLocaleString("default", { month: "long", year: "numeric" })}
+          </h1>
+
+          {/* Next Month Button */}
+          <button
+            onClick={goToNextMonth}
+            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+          >
+            Next →
+          </button>
+        </div>
+
+        {/* Weekdays Header */}
+        <div className="grid grid-cols-7 gap-2 mb-2">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
             <div key={day} className="text-center font-semibold text-gray-600">
               {day}
             </div>
           ))}
         </div>
+
+        {/* Calendar Days */}
         <div className="grid grid-cols-7 gap-2">
           {calendarDays.map((day, index) => {
             if (!day) {
@@ -59,7 +97,7 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
             return (
               <div
                 key={day.dateKey}
-                className="relative text-center p-2 rounded cursor-pointer hover:bg-gray-200"
+                className="relative text-center p-2 rounded border border-gray-200 cursor-pointer hover:bg-gray-200"
                 onClick={() => openModal(day.dateKey)}
               >
                 <div className="font-medium">{day.day}</div>
