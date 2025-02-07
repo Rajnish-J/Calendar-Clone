@@ -11,26 +11,52 @@ export default function EventModal({
   const [title, setTitle] = useState(editingEvent?.title || "");
   const [description, setDescription] = useState(editingEvent?.description || "");
   const [color, setColor] = useState(editingEvent?.color || "#ff4d4d");
-  const [hours, setHours] = useState(editingEvent?.time?.hours || "12");
-  const [minutes, setMinutes] = useState(editingEvent?.time?.minutes || "00");
-  const [period, setPeriod] = useState(editingEvent?.time?.period || "AM");
+  const [startTime, setStartTime] = useState({
+    hours: editingEvent?.startTime?.hours || "12",
+    minutes: editingEvent?.startTime?.minutes || "00",
+    period: editingEvent?.startTime?.period || "AM",
+  });
+  const [endTime, setEndTime] = useState({
+    hours: editingEvent?.endTime?.hours || "12",
+    minutes: editingEvent?.endTime?.minutes || "00",
+    period: editingEvent?.endTime?.period || "PM",
+  });
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Helper function to convert time to minutes for comparison
+  const timeToMinutes = (time) => {
+    const { hours, minutes, period } = time;
+    let totalMinutes = parseInt(hours) * 60 + parseInt(minutes);
+    if (period === "PM" && hours !== "12") totalMinutes += 12 * 60; // Convert PM to 24-hour format
+    if (period === "AM" && hours === "12") totalMinutes -= 12 * 60; // Handle 12 AM as 0
+    return totalMinutes;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validate start time is earlier than end time
+    const startMinutes = timeToMinutes(startTime);
+    const endMinutes = timeToMinutes(endTime);
+
+    if (startMinutes >= endMinutes) {
+      setErrorMessage("End time must be later than start time.");
+      return;
+    }
 
     // Check for time conflicts
     const conflictingEvent = events.find(
       (event) =>
         event.date === selectedDay &&
-        event.time.hours === hours &&
-        event.time.minutes === minutes &&
-        event.time.period === period &&
+        ((timeToMinutes(event.startTime) < endMinutes &&
+          timeToMinutes(event.endTime) > startMinutes) ||
+         (timeToMinutes(event.startTime) === startMinutes &&
+          timeToMinutes(event.endTime) === endMinutes)) &&
         event.id !== editingEvent?.id // Exclude the current event when editing
     );
 
     if (conflictingEvent) {
-      setErrorMessage("There is already an event at this time. Please choose a different time.");
+      setErrorMessage("There is already an event during this time. Please choose a different time.");
       return;
     }
 
@@ -38,14 +64,15 @@ export default function EventModal({
     setErrorMessage("");
 
     const newEvent = {
-      id: editingEvent?.id || Date.now(),
+      id: editingEvent?.id || Date.now(), // Retain the ID for editing
       date: selectedDay,
       title,
       description,
       color,
-      time: { hours, minutes, period },
+      startTime,
+      endTime,
     };
-    onAddEvent(newEvent);
+    onAddEvent(newEvent); // Pass the event to the parent
     onClose();
   };
 
@@ -93,41 +120,80 @@ export default function EventModal({
               className="w-full p-2 border rounded"
             />
           </div>
-          <div className="mb-4 flex gap-2">
+          <div className="mb-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Hours</label>
-              <input
-                type="number"
-                value={hours}
-                onChange={(e) => setHours(e.target.value)}
-                min="1"
-                max="12"
-                className="w-full p-2 border rounded"
-                required
-              />
+              <label className="block text-sm font-medium mb-1">Start Time</label>
+              <div className="flex gap-2">
+                <input
+                  type="number"
+                  value={startTime.hours}
+                  onChange={(e) =>
+                    setStartTime({ ...startTime, hours: e.target.value })
+                  }
+                  min="1"
+                  max="12"
+                  className="w-full p-2 border rounded"
+                  required
+                />
+                <input
+                  type="number"
+                  value={startTime.minutes}
+                  onChange={(e) =>
+                    setStartTime({ ...startTime, minutes: e.target.value })
+                  }
+                  min="0"
+                  max="59"
+                  className="w-full p-2 border rounded"
+                  required
+                />
+                <select
+                  value={startTime.period}
+                  onChange={(e) =>
+                    setStartTime({ ...startTime, period: e.target.value })
+                  }
+                  className="w-full p-2 border rounded"
+                >
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Minutes</label>
-              <input
-                type="number"
-                value={minutes}
-                onChange={(e) => setMinutes(e.target.value)}
-                min="0"
-                max="59"
-                className="w-full p-2 border rounded"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">AM/PM</label>
-              <select
-                value={period}
-                onChange={(e) => setPeriod(e.target.value)}
-                className="w-full p-2 border rounded"
-              >
-                <option value="AM">AM</option>
-                <option value="PM">PM</option>
-              </select>
+              <label className="block text-sm font-medium mb-1">End Time</label>
+              <div className="flex gap-2">
+                <input
+                  type="number"
+                  value={endTime.hours}
+                  onChange={(e) =>
+                    setEndTime({ ...endTime, hours: e.target.value })
+                  }
+                  min="1"
+                  max="12"
+                  className="w-full p-2 border rounded"
+                  required
+                />
+                <input
+                  type="number"
+                  value={endTime.minutes}
+                  onChange={(e) =>
+                    setEndTime({ ...endTime, minutes: e.target.value })
+                  }
+                  min="0"
+                  max="59"
+                  className="w-full p-2 border rounded"
+                  required
+                />
+                <select
+                  value={endTime.period}
+                  onChange={(e) =>
+                    setEndTime({ ...endTime, period: e.target.value })
+                  }
+                  className="w-full p-2 border rounded"
+                >
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
             </div>
           </div>
           <div className="flex justify-end space-x-2">

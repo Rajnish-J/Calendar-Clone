@@ -21,7 +21,7 @@ export default function ViewAllEventsModal({ events, onClose, onDeleteEvent }) {
                 <div className="font-medium text-white">{event.title}</div>
                 <div className="text-xs text-white">{event.description}</div>
                 <div className="text-xs text-white">
-                  {`${event.time.hours}:${event.time.minutes} ${event.time.period}`}
+                  {`${event.startTime.hours}:${event.startTime.minutes} ${event.startTime.period} - ${event.endTime.hours}:${event.endTime.minutes} ${event.endTime.period}`}
                 </div>
               </div>
               <button

@@ -10,9 +10,15 @@ export default function App() {
     setEvents(data.events);
   }, []);
 
-  // Add a new event
-  const addEvent = (newEvent) => {
-    setEvents([...events, newEvent]);
+  // Add or update an event
+  const addOrUpdateEvent = (newEvent) => {
+    if (newEvent.id && events.some((event) => event.id === newEvent.id)) {
+      // Editing: Replace the existing event
+      setEvents(events.map((event) => (event.id === newEvent.id ? newEvent : event)));
+    } else {
+      // Adding: Append the new event
+      setEvents([...events, newEvent]);
+    }
   };
 
   // Delete an event
@@ -24,7 +30,7 @@ export default function App() {
     <div className="flex flex-col h-screen bg-gray-100">
       <Calendar
         events={events}
-        onAddEvent={addEvent}
+        onAddEvent={addOrUpdateEvent} // Updated function
         onDeleteEvent={deleteEvent}
       />
     </div>
