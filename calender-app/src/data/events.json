@@ -1,0 +1,18 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "date": "2023-10-01",
+      "title": "Team Meeting",
+      "description": "Discuss project updates.",
+      "color": "#ff4d4d"
+    },
+    {
+      "id": 2,
+      "date": "2023-10-01",
+      "title": "Lunch with John",
+      "description": "Catch up on work progress.",
+      "color": "#4d79ff"
+    }
+  ]
+}
