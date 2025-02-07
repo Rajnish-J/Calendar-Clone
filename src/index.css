@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: Mont;
+  src: url("./font/Montserrat-VariableFont_wght.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.Mont {
+  font-family: Mont;
+}
