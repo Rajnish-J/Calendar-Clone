@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: PlayFair;
+  src: url("./font/Playfair-Italic-VariableFont_opsz\,wdth\,wght.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.playfair {
+  font-family: PlayFair;
+}

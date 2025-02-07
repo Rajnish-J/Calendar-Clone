@@ -66,19 +66,16 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
         <div className="flex justify-between items-center mb-6">
           <button
             onClick={goToPreviousMonth}
-            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+            className="px-4 py-2 bg-blue-300 rounded hover:bg-gray-300"
           >
             ← Previous
           </button>
           <h1 className="text-2xl font-bold text-center">
-            {currentDate.toLocaleString("default", {
-              month: "long",
-              year: "numeric",
-            })}
+            {currentDate.toLocaleString("default", { month: "long", year: "numeric" })}
           </h1>
           <button
             onClick={goToNextMonth}
-            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+            className="px-4 py-2 bg-blue-300 rounded hover:bg-gray-300"
           >
             Next →
           </button>
@@ -100,9 +97,7 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
               return <div key={index}></div>;
             }
 
-            const dayEvents = events.filter(
-              (event) => event.date === day.dateKey
-            );
+            const dayEvents = events.filter((event) => event.date === day.dateKey);
 
             // Check if the day is today
             const isToday =
@@ -113,14 +108,13 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
               <div
                 key={day.dateKey}
                 className={`relative text-center p-2 rounded cursor-pointer hover:bg-gray-200 ${
-                  isToday
-                    ? "border-2 border-blue-500"
-                    : "border border-gray-200"
+                  isToday ? "border-2 border-blue-500" : "border border-gray-200"
                 }`}
+                style={{ minHeight: "100px" }} // Fixed height for all days
                 onClick={() => openAddModal(day.dateKey)} // Clicking the date opens the "Add Event" modal
               >
                 <div className="font-medium">{day.day}</div>
-                <div className="space-y-1 mt-1">
+                <div className="space-y-1 mt-1 overflow-y-auto">
                   {dayEvents.slice(0, 2).map((event, idx) => (
                     <div
                       key={idx}

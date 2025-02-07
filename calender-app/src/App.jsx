@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import Calendar from "./Components/Calendar";
+import Header from "./Components/Header";
+import Footer from "./Components/Footer";
 import data from "./data/events.json";
 
 export default function App() {
@@ -14,7 +16,9 @@ export default function App() {
   const addOrUpdateEvent = (newEvent) => {
     if (newEvent.id && events.some((event) => event.id === newEvent.id)) {
       // Editing: Replace the existing event
-      setEvents(events.map((event) => (event.id === newEvent.id ? newEvent : event)));
+      setEvents(
+        events.map((event) => (event.id === newEvent.id ? newEvent : event))
+      );
     } else {
       // Adding: Append the new event
       setEvents([...events, newEvent]);
@@ -27,12 +31,21 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
-      <Calendar
-        events={events}
-        onAddEvent={addOrUpdateEvent} // Updated function
-        onDeleteEvent={deleteEvent}
-      />
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      {/* Header */}
+      <Header />
+
+      {/* Main Content */}
+      <main className="flex-1">
+        <Calendar
+          events={events}
+          onAddEvent={addOrUpdateEvent}
+          onDeleteEvent={deleteEvent}
+        />
+      </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
