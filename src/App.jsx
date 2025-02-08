@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Calendar from "./Components/Calendar";
 import Header from "./Components/Header";
-import Footer from "./components/Footer";
+import Footer from "./Components/Footer";
 import data from "./data/events.json";
 
 export default function App() {
