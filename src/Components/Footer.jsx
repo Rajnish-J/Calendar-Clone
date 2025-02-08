@@ -7,7 +7,7 @@ export default function Footer() {
         </p>
         <p>
           Made with ❤️ by{" "}
-          <a href="#" className="text-blue-400 hover:underline">
+          <a href="https://github.com/Rajnish-J" target="_blank" className="text-blue-400 hover:underline">
             Rajnish J
           </a>
         </p>

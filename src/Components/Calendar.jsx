@@ -67,11 +67,11 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
         <div className="flex justify-between items-center mb-6">
           <button
             onClick={goToPreviousMonth}
-            className="px-4 py-2 rounded hover:bg-gray-300 bg-purple-400 text-white font-bold"
+            className="px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-gray-300 bg-purple-400 text-white font-bold text-sm sm:text-base"
           >
             ← Previous
           </button>
-          <h1 className="text-2xl font-bold text-center">
+          <h1 className="text-xl font-bold text-center flex-1 sm:text-2xl">
             {currentDate.toLocaleString("default", {
               month: "long",
               year: "numeric",
@@ -79,7 +79,7 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
           </h1>
           <button
             onClick={goToNextMonth}
-            className="px-4 py-2  rounded hover:bg-gray-300 bg-purple-400 text-white font-bold"
+            className="px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-gray-300 bg-purple-400 text-white font-bold text-sm sm:text-base"
           >
             Next →
           </button>
