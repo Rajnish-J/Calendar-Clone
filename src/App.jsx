@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Calendar from "./components/Calendar";
+import Calendar from "./Components/Calendar";
 import Header from "./Components/Header";
 import Footer from "./components/Footer";
 import data from "./data/events.json";
