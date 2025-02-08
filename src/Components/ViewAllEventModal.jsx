@@ -1,6 +1,13 @@
-export default function ViewAllEventsModal({ events, onClose, onDeleteEvent }) {
+import PropTypes from "prop-types";
+
+export default function ViewAllEventsModal({
+  events,
+  onClose,
+  onDeleteEvent,
+  onEditEvent,
+}) {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee] ...">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee]">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
         {/* Close Button */}
         <button
@@ -14,8 +21,9 @@ export default function ViewAllEventsModal({ events, onClose, onDeleteEvent }) {
           {events.map((event, idx) => (
             <div
               key={idx}
-              className="flex justify-between items-center p-2 rounded"
+              className="flex justify-between items-center p-2 rounded cursor-pointer"
               style={{ backgroundColor: event.color }}
+              onClick={() => onEditEvent(event)} // Open Edit Event Modal
             >
               <div>
                 <div className="font-medium text-white">{event.title}</div>
@@ -26,7 +34,10 @@ export default function ViewAllEventsModal({ events, onClose, onDeleteEvent }) {
               </div>
               <button
                 className="text-white hover:text-red-300"
-                onClick={() => onDeleteEvent(event.id)}
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent opening the edit modal
+                  onDeleteEvent(event.id); // Delete the event
+                }}
               >
                 &times;
               </button>
@@ -37,3 +48,29 @@ export default function ViewAllEventsModal({ events, onClose, onDeleteEvent }) {
     </div>
   );
 }
+
+// Props validation
+ViewAllEventsModal.propTypes = {
+  events: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      date: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      description: PropTypes.string,
+      color: PropTypes.string.isRequired,
+      startTime: PropTypes.shape({
+        hours: PropTypes.string.isRequired,
+        minutes: PropTypes.string.isRequired,
+        period: PropTypes.string.isRequired,
+      }).isRequired,
+      endTime: PropTypes.shape({
+        hours: PropTypes.string.isRequired,
+        minutes: PropTypes.string.isRequired,
+        period: PropTypes.string.isRequired,
+      }).isRequired,
+    })
+  ).isRequired,
+  onClose: PropTypes.func.isRequired,
+  onDeleteEvent: PropTypes.func.isRequired,
+  onEditEvent: PropTypes.func.isRequired,
+};

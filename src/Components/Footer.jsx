@@ -15,3 +15,6 @@ export default function Footer() {
     </footer>
   );
 }
+
+// Props validation (if props are added in the future)
+Footer.propTypes = {};

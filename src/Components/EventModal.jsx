@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 export default function EventModal({
   selectedDay,
@@ -229,3 +230,47 @@ export default function EventModal({
     </div>
   );
 }
+
+// Props validation
+EventModal.propTypes = {
+  selectedDay: PropTypes.string.isRequired,
+  editingEvent: PropTypes.shape({
+    id: PropTypes.number,
+    date: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    color: PropTypes.string,
+    startTime: PropTypes.shape({
+      hours: PropTypes.string,
+      minutes: PropTypes.string,
+      period: PropTypes.string,
+    }),
+    endTime: PropTypes.shape({
+      hours: PropTypes.string,
+      minutes: PropTypes.string,
+      period: PropTypes.string,
+    }),
+  }),
+  onClose: PropTypes.func.isRequired,
+  onAddEvent: PropTypes.func.isRequired,
+  onDeleteEvent: PropTypes.func.isRequired,
+  events: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      date: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      description: PropTypes.string,
+      color: PropTypes.string.isRequired,
+      startTime: PropTypes.shape({
+        hours: PropTypes.string.isRequired,
+        minutes: PropTypes.string.isRequired,
+        period: PropTypes.string.isRequired,
+      }).isRequired,
+      endTime: PropTypes.shape({
+        hours: PropTypes.string.isRequired,
+        minutes: PropTypes.string.isRequired,
+        period: PropTypes.string.isRequired,
+      }).isRequired,
+    })
+  ).isRequired,
+};

@@ -10,3 +10,6 @@ export default function Header() {
     </header>
   );
 }
+
+// Props validation (if props are added in the future)
+Header.propTypes = {};

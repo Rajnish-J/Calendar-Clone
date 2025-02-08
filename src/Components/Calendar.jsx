@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import generateCalendarDays from "../utils/GenerateCalendar";
 import EventModal from "./EventModal";
 import ViewAllEventsModal from "./ViewAllEventModal";
@@ -171,8 +172,34 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
           events={events.filter((event) => event.date === selectedDay)}
           onClose={closeViewAllEventsModal}
           onDeleteEvent={onDeleteEvent}
+          onEditEvent={openEditModal} // Pass the edit event handler
         />
       )}
     </div>
   );
 }
+
+// Props validation
+Calendar.propTypes = {
+  events: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      date: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      description: PropTypes.string,
+      color: PropTypes.string.isRequired,
+      startTime: PropTypes.shape({
+        hours: PropTypes.string.isRequired,
+        minutes: PropTypes.string.isRequired,
+        period: PropTypes.string.isRequired,
+      }).isRequired,
+      endTime: PropTypes.shape({
+        hours: PropTypes.string.isRequired,
+        minutes: PropTypes.string.isRequired,
+        period: PropTypes.string.isRequired,
+      }).isRequired,
+    })
+  ).isRequired,
+  onAddEvent: PropTypes.func.isRequired,
+  onDeleteEvent: PropTypes.func.isRequired,
+};
