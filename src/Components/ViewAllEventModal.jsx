@@ -25,27 +25,30 @@ export default function ViewAllEventsModal({
           {events.map((event, idx) => (
             <div
               key={idx}
-              className="p-2 border rounded flex justify-between items-center"
-              style={{ backgroundColor: "#f9f9f9" }}
+              className="p-2 rounded flex justify-between items-center bg-purple-500" // Use the event's color as the background
             >
               <div>
-                <div className="font-medium">{event.title}</div>
-                <div className="text-sm text-gray-600">{event.description}</div>
-                <div className="text-xs text-gray-500">
+                <div className="font-bold text-black">{event.title}</div>{" "}
+                {/* White text for contrast */}
+                <div className="text-sm font-bold text-black">
+                  {event.description}
+                </div>{" "}
+                {/* White text for contrast */}
+                <div className="text-xs text-black">
                   {`${event.startTime.hours}:${event.startTime.minutes} ${event.startTime.period} - ${event.endTime.hours}:${event.endTime.minutes} ${event.endTime.period}`}
                 </div>
               </div>
               <div className="flex space-x-2">
                 {/* Edit Button */}
                 <button
-                  className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  className="px-2 py-1 bg-blue-500 text-black font-bold rounded hover:bg-blue-600"
                   onClick={() => onEditEvent(event)} // Call the edit handler
                 >
                   Edit
                 </button>
                 {/* Delete Button */}
                 <button
-                  className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                  className="px-2 py-1 bg-red-500 text-black font-bold rounded hover:bg-red-600"
                   onClick={(e) => {
                     e.stopPropagation();
                     onDeleteEvent(event.id);
