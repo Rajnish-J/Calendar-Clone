@@ -13,7 +13,7 @@ export default function EventModal({
   const [description, setDescription] = useState(
     editingEvent?.description || ""
   );
-  const [color, setColor] = useState(editingEvent?.color || "#ff4d4d");
+  const [color, setColor] = useState(editingEvent?.color || "#ff4d4d"); // Default color is red
   const [startTime, setStartTime] = useState({
     hours: editingEvent?.startTime?.hours || "12",
     minutes: editingEvent?.startTime?.minutes || "00",
@@ -83,9 +83,6 @@ export default function EventModal({
     onClose();
   };
 
-  // Determine button text dynamically
-  const buttonText = editingEvent ? "Update" : "Save";
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee]">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
@@ -130,7 +127,6 @@ export default function EventModal({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="w-full p-2 border rounded"
-              required
             ></textarea>
           </div>
 
@@ -141,7 +137,8 @@ export default function EventModal({
               type="color"
               value={color}
               onChange={(e) => setColor(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border-none rounded appearance-none cursor-pointer"
+              style={{ backgroundColor: color }} // Reflect the selected color in the input field
             />
           </div>
 
@@ -243,7 +240,7 @@ export default function EventModal({
               type="submit"
               className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
             >
-              {buttonText} {/* Dynamically display "Save" or "Update" */}
+              {editingEvent ? "Update" : "Save"}
             </button>
           </div>
         </form>

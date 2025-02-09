@@ -65,24 +65,28 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
       <div className="bg-white shadow-lg rounded-lg p-6 w-full h-full">
         {/* Month Navigation */}
         <div className="flex justify-between items-center mb-6">
-          <button
-            onClick={goToPreviousMonth}
-            className="px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-gray-300 bg-purple-500 text-black font-bold text-sm sm:text-base"
-          >
-            ← Previous
-          </button>
-          <h1 className="text-xl font-bold text-center flex-1 sm:text-2xl">
+          {/* Month and Year on the Left */}
+          <h1 className="text-xl font-bold sm:text-2xl">
             {currentDate.toLocaleString("default", {
               month: "long",
               year: "numeric",
             })}
           </h1>
-          <button
-            onClick={goToNextMonth}
-            className="px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-gray-300 bg-purple-500 text-black font-bold text-sm sm:text-base"
-          >
-            Next →
-          </button>
+          {/* Navigation Buttons on the Right */}
+          <div className="flex space-x-2">
+            <button
+              onClick={goToPreviousMonth}
+              className="p-2 rounded hover:bg-gray-300 bg-gray-200 text-gray-700 bg-purple-500"
+            >
+              ❮
+            </button>
+            <button
+              onClick={goToNextMonth}
+              className="p-2 rounded hover:bg-gray-300 bg-gray-200 text-gray-700 bg-purple-500"
+            >
+              ❯
+            </button>
+          </div>
         </div>
 
         {/* Weekdays Header */}
