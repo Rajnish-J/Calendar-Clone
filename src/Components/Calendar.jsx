@@ -67,7 +67,7 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
         <div className="flex justify-between items-center mb-6">
           <button
             onClick={goToPreviousMonth}
-            className="px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-gray-300 bg-purple-400 text-white font-bold text-sm sm:text-base"
+            className="px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-gray-300 bg-purple-500 text-black font-bold text-sm sm:text-base"
           >
             ← Previous
           </button>
@@ -79,7 +79,7 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
           </h1>
           <button
             onClick={goToNextMonth}
-            className="px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-gray-300 bg-purple-400 text-white font-bold text-sm sm:text-base"
+            className="px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-gray-300 bg-purple-500 text-black font-bold text-sm sm:text-base"
           >
             Next →
           </button>
