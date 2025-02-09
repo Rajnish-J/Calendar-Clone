@@ -9,22 +9,36 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
   const [selectedDay, setSelectedDay] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [viewAllEventsModalOpen, setViewAllEventsModalOpen] = useState(false);
-  const [editingEvent, setEditingEvent] = useState(null); // Tracks the event being edited
+  const [editingEvent, setEditingEvent] = useState(null);
   const calendarDays = generateCalendarDays(currentDate);
+
+  // Helper function to check if a date is in the past
+  const isPastDate = (dateKey) => {
+    const today = new Date();
+    const eventDate = new Date(dateKey);
+    return eventDate < today.setHours(0, 0, 0, 0); // Compare only the date part
+  };
 
   // Open Add Event Modal
   const openAddModal = (dateKey) => {
+    if (isPastDate(dateKey)) {
+      alert("You cannot add events to past dates.");
+      return;
+    }
     setSelectedDay(dateKey);
-    setEditingEvent(null); // Reset editing state
+    setEditingEvent(null);
     setModalOpen(true);
   };
 
   // Open Edit Event Modal
   const openEditModal = (event) => {
+    if (isPastDate(event.date)) {
+      alert("You cannot edit events from past dates.");
+      return;
+    }
     setSelectedDay(event.date);
-    setEditingEvent(event); // Set the event being edited
-    setViewAllEventsModalOpen(false); // Close the "All Events Modal"
-    setModalOpen(true); // Open the EventModal for editing
+    setEditingEvent(event);
+    setModalOpen(true);
   };
 
   // Close Modals
@@ -106,6 +120,7 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
             const isToday =
               new Date().toDateString() ===
               new Date(day.dateKey).toDateString();
+            const isPast = isPastDate(day.dateKey);
             return (
               <div
                 key={day.dateKey}
@@ -113,20 +128,25 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
                   isToday
                     ? "border-2 border-blue-500"
                     : "border border-gray-200"
-                }`}
+                } ${isPast ? "opacity-50" : ""}`}
                 style={{ minHeight: "100px" }}
-                onClick={() => openAddModal(day.dateKey)}
+                onClick={() => (isPast ? null : openAddModal(day.dateKey))}
               >
-                <div className="font-medium">{day.day}</div>
+                <div className="font-bold">{day.day}</div>
                 <div className="space-y-1 mt-1 overflow-y-auto">
                   {dayEvents.slice(0, 2).map((event, idx) => (
                     <div
                       key={idx}
-                      className="text-xs truncate text-white rounded px-1 py-0.5 cursor-pointer"
-                      style={{ backgroundColor: event.color }}
+                      className={`text-xs truncate rounded px-1 py-0.5 cursor-pointer ${
+                        isPast ? "line-through text-gray-400" : ""
+                      }`}
+                      style={{
+                        backgroundColor: isPast ? event.color : event.color,
+                        color: isPast ? "white" : "white",
+                      }}
                       onClick={(e) => {
                         e.stopPropagation();
-                        openEditModal(event);
+                        if (!isPast) openEditModal(event);
                       }}
                     >
                       {event.title}
@@ -174,7 +194,7 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
               events={events.filter((event) => event.date === selectedDay)}
               onClose={closeViewAllEventsModal}
               onDeleteEvent={onDeleteEvent}
-              onEditEvent={openEditModal} // Pass the edit event handler
+              onEditEvent={openEditModal}
             />
           </div>
         </div>
@@ -190,6 +210,7 @@ Calendar.propTypes = {
       id: PropTypes.number.isRequired,
       date: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
+      description: PropTypes.string,
       color: PropTypes.string.isRequired,
       startTime: PropTypes.shape({
         hours: PropTypes.string.isRequired,

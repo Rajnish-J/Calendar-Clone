@@ -6,6 +6,13 @@ export default function ViewAllEventsModal({
   onDeleteEvent,
   onEditEvent,
 }) {
+  // Helper function to check if a date is in the past
+  const isPastDate = (dateKey) => {
+    const today = new Date();
+    const eventDate = new Date(dateKey);
+    return eventDate < today.setHours(0, 0, 0, 0); // Compare only the date part
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee]">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
@@ -22,43 +29,65 @@ export default function ViewAllEventsModal({
 
         {/* List of Events */}
         <div className="space-y-2">
-          {events.map((event, idx) => (
-            <div
-              key={idx}
-              className="p-2 rounded flex justify-between items-center bg-purple-500" // Use the event's color as the background
-            >
-              <div>
-                <div className="font-bold text-black">{event.title}</div>{" "}
-                {/* White text for contrast */}
-                <div className="text-sm font-bold text-black">
-                  {event.description}
-                </div>{" "}
-                {/* White text for contrast */}
-                <div className="text-xs text-black">
-                  {`${event.startTime.hours}:${event.startTime.minutes} ${event.startTime.period} - ${event.endTime.hours}:${event.endTime.minutes} ${event.endTime.period}`}
+          {events.map((event, idx) => {
+            const isPast = isPastDate(event.date);
+            return (
+              <div
+                key={idx}
+                className="p-2 border rounded flex justify-between items-center"
+                style={{ backgroundColor: isPast ? "#cccccc" : event.color }}
+              >
+                <div>
+                  <div
+                    className={`font-medium ${
+                      isPast ? "line-through text-gray-400" : "text-white"
+                    }`}
+                  >
+                    {event.title}
+                  </div>
+                  <div
+                    className={`text-sm ${
+                      isPast ? "text-gray-400" : "text-white"
+                    }`}
+                  >
+                    {event.description}
+                  </div>
+                  <div
+                    className={`text-xs ${
+                      isPast ? "text-gray-400" : "text-white"
+                    }`}
+                  >
+                    {`${event.startTime.hours}:${event.startTime.minutes} ${event.startTime.period} - ${event.endTime.hours}:${event.endTime.minutes} ${event.endTime.period}`}
+                  </div>
+                </div>
+                <div className="flex space-x-2">
+                  {/* Edit Button */}
+                  <button
+                    className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
+                    onClick={() => {
+                      if (!isPast) onEditEvent(event);
+                      else alert("You cannot edit events from past dates.");
+                    }}
+                    disabled={isPast}
+                  >
+                    Edit
+                  </button>
+                  {/* Delete Button */}
+                  <button
+                    className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 disabled:bg-gray-400"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (!isPast) onDeleteEvent(event.id);
+                      else alert("You cannot delete events from past dates.");
+                    }}
+                    disabled={isPast}
+                  >
+                    ×
+                  </button>
                 </div>
               </div>
-              <div className="flex space-x-2">
-                {/* Edit Button */}
-                <button
-                  className="px-2 py-1 bg-blue-500 text-black font-bold rounded hover:bg-blue-600"
-                  onClick={() => onEditEvent(event)} // Call the edit handler
-                >
-                  Edit
-                </button>
-                {/* Delete Button */}
-                <button
-                  className="px-2 py-1 bg-red-500 text-black font-bold rounded hover:bg-red-600"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDeleteEvent(event.id);
-                  }}
-                >
-                  ×
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
