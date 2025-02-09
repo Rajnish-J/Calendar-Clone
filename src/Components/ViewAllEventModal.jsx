@@ -16,31 +16,44 @@ export default function ViewAllEventsModal({
         >
           &times;
         </button>
+
+        {/* Modal Title */}
         <h2 className="text-xl font-bold mb-4">All Events</h2>
+
+        {/* List of Events */}
         <div className="space-y-2">
           {events.map((event, idx) => (
             <div
               key={idx}
-              className="flex justify-between items-center p-2 rounded cursor-pointer"
-              style={{ backgroundColor: event.color }}
-              onClick={() => onEditEvent(event)} // Open Edit Event Modal
+              className="p-2 border rounded flex justify-between items-center"
+              style={{ backgroundColor: "#f9f9f9" }}
             >
               <div>
-                <div className="font-medium text-white">{event.title}</div>
-                <div className="text-xs text-white">{event.description}</div>
-                <div className="text-xs text-white">
+                <div className="font-medium">{event.title}</div>
+                <div className="text-sm text-gray-600">{event.description}</div>
+                <div className="text-xs text-gray-500">
                   {`${event.startTime.hours}:${event.startTime.minutes} ${event.startTime.period} - ${event.endTime.hours}:${event.endTime.minutes} ${event.endTime.period}`}
                 </div>
               </div>
-              <button
-                className="text-white hover:text-red-300"
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent opening the edit modal
-                  onDeleteEvent(event.id); // Delete the event
-                }}
-              >
-                &times;
-              </button>
+              <div className="flex space-x-2">
+                {/* Edit Button */}
+                <button
+                  className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  onClick={() => onEditEvent(event)}
+                >
+                  Edit
+                </button>
+                {/* Delete Button */}
+                <button
+                  className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDeleteEvent(event.id);
+                  }}
+                >
+                  ×
+                </button>
+              </div>
             </div>
           ))}
         </div>

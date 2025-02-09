@@ -27,16 +27,6 @@ export default function App() {
 
   // Delete an event
   const deleteEvent = (id) => {
-    // Check if the event is static (exists in the original JSON file)
-    const isStaticEvent = data.events.some((event) => event.id === id);
-
-    if (isStaticEvent) {
-      // Show an alert and prevent deletion
-      alert("Static data cannot be deleted.");
-      return;
-    }
-
-    // Allow deletion for non-static events
     setEvents(events.filter((event) => event.id !== id));
   };
 

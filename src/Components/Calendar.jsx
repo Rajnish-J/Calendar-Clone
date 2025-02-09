@@ -10,50 +10,49 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [viewAllEventsModalOpen, setViewAllEventsModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState(null);
-
   const calendarDays = generateCalendarDays(currentDate);
 
-  // Handle modal open for adding a new event
+  // Open Add Event Modal
   const openAddModal = (dateKey) => {
     setSelectedDay(dateKey);
-    setEditingEvent(null); // Reset editing state
+    setEditingEvent(null);
     setModalOpen(true);
   };
 
-  // Handle modal open for editing an existing event
+  // Open Edit Event Modal
   const openEditModal = (event) => {
     setSelectedDay(event.date);
-    setEditingEvent(event); // Set the event being edited
+    setEditingEvent(event);
     setModalOpen(true);
   };
 
-  // Handle modal close
+  // Close Modals
   const closeModal = () => {
     setSelectedDay(null);
     setEditingEvent(null);
     setModalOpen(false);
   };
 
-  // Open modal to view all events for a day
+  // Open View All Events Modal
   const openViewAllEventsModal = (dateKey) => {
     setSelectedDay(dateKey);
     setViewAllEventsModalOpen(true);
   };
 
-  // Close modal to view all events
+  // Close View All Events Modal
   const closeViewAllEventsModal = () => {
     setSelectedDay(null);
     setViewAllEventsModalOpen(false);
   };
 
-  // Navigate to the previous month
+  // Navigate to Previous Month
   const goToPreviousMonth = () => {
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
     );
   };
 
-  // Navigate to the next month
+  // Navigate to Next Month
   const goToNextMonth = () => {
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
@@ -62,27 +61,25 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
 
   return (
     <div className="flex-1 overflow-auto p-4">
-      <div className="bg-white shadow-lg rounded-lg p-6 w-full h-full">
+      <div className="bg-white shadow-lg rounded-lg p-6 w-full h-full relative">
         {/* Month Navigation */}
         <div className="flex justify-between items-center mb-6">
-          {/* Month and Year on the Left */}
           <h1 className="text-xl font-bold sm:text-2xl">
             {currentDate.toLocaleString("default", {
               month: "long",
               year: "numeric",
             })}
           </h1>
-          {/* Navigation Buttons on the Right */}
           <div className="flex space-x-2">
             <button
               onClick={goToPreviousMonth}
-              className="p-2 rounded hover:bg-gray-300 bg-gray-200 text-gray-700 bg-purple-500"
+              className="p-2 rounded hover:bg-purple-700 bg-purple-500 text-black"
             >
               ❮
             </button>
             <button
               onClick={goToNextMonth}
-              className="p-2 rounded hover:bg-gray-300 bg-gray-200 text-gray-700 bg-purple-500"
+              className="p-2 rounded hover:bg-purple-700 bg-purple-500 text-black"
             >
               ❯
             </button>
@@ -101,19 +98,13 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
         {/* Calendar Days */}
         <div className="grid grid-cols-7 gap-2">
           {calendarDays.map((day, index) => {
-            if (!day) {
-              return <div key={index}></div>;
-            }
-
+            if (!day) return <div key={index}></div>;
             const dayEvents = events.filter(
               (event) => event.date === day.dateKey
             );
-
-            // Check if the day is today
             const isToday =
               new Date().toDateString() ===
               new Date(day.dateKey).toDateString();
-
             return (
               <div
                 key={day.dateKey}
@@ -122,30 +113,30 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
                     ? "border-2 border-blue-500"
                     : "border border-gray-200"
                 }`}
-                style={{ minHeight: "100px" }} // Fixed height for all days
-                onClick={() => openAddModal(day.dateKey)} // Clicking the date opens the "Add Event" modal
+                style={{ minHeight: "100px" }}
+                onClick={() => openAddModal(day.dateKey)}
               >
                 <div className="font-medium">{day.day}</div>
                 <div className="space-y-1 mt-1 overflow-y-auto">
                   {dayEvents.slice(0, 2).map((event, idx) => (
                     <div
                       key={idx}
-                      className={`text-xs truncate text-white rounded px-1 py-0.5 cursor-pointer`}
+                      className="text-xs truncate text-white rounded px-1 py-0.5 cursor-pointer"
                       style={{ backgroundColor: event.color }}
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevent opening the add event modal
-                        openEditModal(event); // Clicking an event opens the "Edit/Delete Event" modal
+                        e.stopPropagation();
+                        openEditModal(event);
                       }}
                     >
-                      {`${event.title} (${event.startTime.hours}:${event.startTime.minutes} ${event.startTime.period} - ${event.endTime.hours}:${event.endTime.minutes} ${event.endTime.period})`}
+                      {event.title}
                     </div>
                   ))}
                   {dayEvents.length > 2 && (
                     <div
                       className="text-xs text-blue-500 cursor-pointer mt-1"
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevent opening the add event modal
-                        openViewAllEventsModal(day.dateKey); // Clicking "+X more" opens the "View All Events" modal
+                        e.stopPropagation();
+                        openViewAllEventsModal(day.dateKey);
                       }}
                     >
                       +{dayEvents.length - 2} more
@@ -160,24 +151,32 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
 
       {/* Modal for Adding/Editing Events */}
       {modalOpen && (
-        <EventModal
-          selectedDay={selectedDay}
-          editingEvent={editingEvent}
-          onClose={closeModal}
-          onAddEvent={onAddEvent}
-          onDeleteEvent={onDeleteEvent}
-          events={events} // Pass events to check for conflicts
-        />
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-md z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96 z-50">
+            <EventModal
+              selectedDay={selectedDay}
+              editingEvent={editingEvent}
+              onClose={closeModal}
+              onAddEvent={onAddEvent}
+              onDeleteEvent={onDeleteEvent}
+              events={events}
+            />
+          </div>
+        </div>
       )}
 
       {/* Modal for Viewing All Events */}
       {viewAllEventsModalOpen && (
-        <ViewAllEventsModal
-          events={events.filter((event) => event.date === selectedDay)}
-          onClose={closeViewAllEventsModal}
-          onDeleteEvent={onDeleteEvent}
-          onEditEvent={openEditModal} // Pass the edit event handler
-        />
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-md z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96 z-50">
+            <ViewAllEventsModal
+              events={events.filter((event) => event.date === selectedDay)}
+              onClose={closeViewAllEventsModal}
+              onDeleteEvent={onDeleteEvent}
+              onEditEvent={openEditModal}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
@@ -190,7 +189,6 @@ Calendar.propTypes = {
       id: PropTypes.number.isRequired,
       date: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
-      description: PropTypes.string,
       color: PropTypes.string.isRequired,
       startTime: PropTypes.shape({
         hours: PropTypes.string.isRequired,
