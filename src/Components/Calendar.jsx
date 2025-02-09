@@ -37,8 +37,9 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
       return;
     }
     setSelectedDay(event.date);
-    setEditingEvent(event);
-    setModalOpen(true);
+    setEditingEvent(event); // Set the event being edited
+    setViewAllEventsModalOpen(false); // Close the "All Events Modal"
+    setModalOpen(true); // Open the EventModal for editing
   };
 
   // Close Modals
@@ -132,7 +133,7 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
                 style={{ minHeight: "100px" }}
                 onClick={() => (isPast ? null : openAddModal(day.dateKey))}
               >
-                <div className="font-bold">{day.day}</div>
+                <div className="font-medium">{day.day}</div>
                 <div className="space-y-1 mt-1 overflow-y-auto">
                   {dayEvents.slice(0, 2).map((event, idx) => (
                     <div
@@ -194,7 +195,7 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
               events={events.filter((event) => event.date === selectedDay)}
               onClose={closeViewAllEventsModal}
               onDeleteEvent={onDeleteEvent}
-              onEditEvent={openEditModal}
+              onEditEvent={openEditModal} // Pass the edit event handler
             />
           </div>
         </div>
