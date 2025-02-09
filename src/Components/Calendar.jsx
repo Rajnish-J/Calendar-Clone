@@ -9,21 +9,22 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
   const [selectedDay, setSelectedDay] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [viewAllEventsModalOpen, setViewAllEventsModalOpen] = useState(false);
-  const [editingEvent, setEditingEvent] = useState(null);
+  const [editingEvent, setEditingEvent] = useState(null); // Tracks the event being edited
   const calendarDays = generateCalendarDays(currentDate);
 
   // Open Add Event Modal
   const openAddModal = (dateKey) => {
     setSelectedDay(dateKey);
-    setEditingEvent(null);
+    setEditingEvent(null); // Reset editing state
     setModalOpen(true);
   };
 
   // Open Edit Event Modal
   const openEditModal = (event) => {
     setSelectedDay(event.date);
-    setEditingEvent(event);
-    setModalOpen(true);
+    setEditingEvent(event); // Set the event being edited
+    setViewAllEventsModalOpen(false); // Close the "All Events Modal"
+    setModalOpen(true); // Open the EventModal for editing
   };
 
   // Close Modals
@@ -173,7 +174,7 @@ export default function Calendar({ events, onAddEvent, onDeleteEvent }) {
               events={events.filter((event) => event.date === selectedDay)}
               onClose={closeViewAllEventsModal}
               onDeleteEvent={onDeleteEvent}
-              onEditEvent={openEditModal}
+              onEditEvent={openEditModal} // Pass the edit event handler
             />
           </div>
         </div>
