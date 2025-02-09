@@ -50,6 +50,23 @@
         "minutes": "30",
         "period": "PM"
       }
+    },
+    {
+      "id": 4,
+      "date": "2025-02-05",
+      "title": "Team-out",
+      "description": "Weekdays plan",
+      "color": "red",
+      "startTime": {
+        "hours": "03",
+        "minutes": "30",
+        "period": "PM"
+      },
+      "endTime": {
+        "hours": "04",
+        "minutes": "30",
+        "period": "PM"
+      }
     }
   ]
 }

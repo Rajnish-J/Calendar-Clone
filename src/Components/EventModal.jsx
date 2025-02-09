@@ -13,7 +13,7 @@ export default function EventModal({
   const [description, setDescription] = useState(
     editingEvent?.description || ""
   );
-  const [color, setColor] = useState(editingEvent?.color || "#ff4d4d");
+  const [color, setColor] = useState(editingEvent?.color || "#ff4d4d"); // Default color is red
   const [startTime, setStartTime] = useState({
     hours: editingEvent?.startTime?.hours || "12",
     minutes: editingEvent?.startTime?.minutes || "00",
@@ -41,7 +41,6 @@ export default function EventModal({
     // Validate start time is earlier than end time
     const startMinutes = timeToMinutes(startTime);
     const endMinutes = timeToMinutes(endTime);
-
     if (startMinutes >= endMinutes) {
       setErrorMessage("End time must be later than start time.");
       return;
@@ -68,6 +67,7 @@ export default function EventModal({
     // Clear any previous error message
     setErrorMessage("");
 
+    // Create the new event object
     const newEvent = {
       id: editingEvent?.id || Date.now(), // Retain the ID for editing
       date: selectedDay,
@@ -77,12 +77,14 @@ export default function EventModal({
       startTime,
       endTime,
     };
-    onAddEvent(newEvent); // Pass the event to the parent
+
+    // Pass the event to the parent and close the modal
+    onAddEvent(newEvent);
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee] ...">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee]">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
         {/* Close Button */}
         <button
@@ -91,13 +93,20 @@ export default function EventModal({
         >
           &times;
         </button>
+
+        {/* Modal Title */}
         <h2 className="text-xl font-bold mb-4">
           {editingEvent ? "Edit Event" : "Add Event"}
         </h2>
+
+        {/* Error Message */}
         {errorMessage && (
           <div className="text-red-500 text-sm mb-4">{errorMessage}</div>
         )}
+
+        {/* Form */}
         <form onSubmit={handleSubmit}>
+          {/* Title Field */}
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Title</label>
             <input
@@ -108,6 +117,8 @@ export default function EventModal({
               required
             />
           </div>
+
+          {/* Description Field */}
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">
               Description
@@ -118,93 +129,100 @@ export default function EventModal({
               className="w-full p-2 border rounded"
             ></textarea>
           </div>
+
+          {/* Color Picker */}
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Color</label>
             <input
               type="color"
               value={color}
               onChange={(e) => setColor(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border-none rounded appearance-none cursor-pointer"
+              style={{ backgroundColor: color }} // Reflect the selected color in the input field
             />
           </div>
+
+          {/* Start Time */}
           <div className="mb-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Start Time
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="number"
-                  value={startTime.hours}
-                  onChange={(e) =>
-                    setStartTime({ ...startTime, hours: e.target.value })
-                  }
-                  min="1"
-                  max="12"
-                  className="w-full p-2 border rounded"
-                  required
-                />
-                <input
-                  type="number"
-                  value={startTime.minutes}
-                  onChange={(e) =>
-                    setStartTime({ ...startTime, minutes: e.target.value })
-                  }
-                  min="0"
-                  max="59"
-                  className="w-full p-2 border rounded"
-                  required
-                />
-                <select
-                  value={startTime.period}
-                  onChange={(e) =>
-                    setStartTime({ ...startTime, period: e.target.value })
-                  }
-                  className="w-full p-2 border rounded"
-                >
-                  <option value="AM">AM</option>
-                  <option value="PM">PM</option>
-                </select>
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">End Time</label>
-              <div className="flex gap-2">
-                <input
-                  type="number"
-                  value={endTime.hours}
-                  onChange={(e) =>
-                    setEndTime({ ...endTime, hours: e.target.value })
-                  }
-                  min="1"
-                  max="12"
-                  className="w-full p-2 border rounded"
-                  required
-                />
-                <input
-                  type="number"
-                  value={endTime.minutes}
-                  onChange={(e) =>
-                    setEndTime({ ...endTime, minutes: e.target.value })
-                  }
-                  min="0"
-                  max="59"
-                  className="w-full p-2 border rounded"
-                  required
-                />
-                <select
-                  value={endTime.period}
-                  onChange={(e) =>
-                    setEndTime({ ...endTime, period: e.target.value })
-                  }
-                  className="w-full p-2 border rounded"
-                >
-                  <option value="AM">AM</option>
-                  <option value="PM">PM</option>
-                </select>
-              </div>
+            <label className="block text-sm font-medium mb-1">Start Time</label>
+            <div className="flex gap-2">
+              <input
+                type="number"
+                value={startTime.hours}
+                onChange={(e) =>
+                  setStartTime({ ...startTime, hours: e.target.value })
+                }
+                min="1"
+                max="12"
+                className="w-full p-2 border rounded"
+                required
+              />
+              <input
+                type="number"
+                value={startTime.minutes}
+                onChange={(e) =>
+                  setStartTime({ ...startTime, minutes: e.target.value })
+                }
+                min="0"
+                max="59"
+                className="w-full p-2 border rounded"
+                required
+              />
+              <select
+                value={startTime.period}
+                onChange={(e) =>
+                  setStartTime({ ...startTime, period: e.target.value })
+                }
+                className="w-full p-2 border rounded"
+                required
+              >
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+              </select>
             </div>
           </div>
+
+          {/* End Time */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">End Time</label>
+            <div className="flex gap-2">
+              <input
+                type="number"
+                value={endTime.hours}
+                onChange={(e) =>
+                  setEndTime({ ...endTime, hours: e.target.value })
+                }
+                min="1"
+                max="12"
+                className="w-full p-2 border rounded"
+                required
+              />
+              <input
+                type="number"
+                value={endTime.minutes}
+                onChange={(e) =>
+                  setEndTime({ ...endTime, minutes: e.target.value })
+                }
+                min="0"
+                max="59"
+                className="w-full p-2 border rounded"
+                required
+              />
+              <select
+                value={endTime.period}
+                onChange={(e) =>
+                  setEndTime({ ...endTime, period: e.target.value })
+                }
+                className="w-full p-2 border rounded"
+                required
+              >
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
           <div className="flex justify-end space-x-2">
             {editingEvent && (
               <button
@@ -220,9 +238,9 @@ export default function EventModal({
             )}
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
             >
-              Save
+              {editingEvent ? "Update" : "Save"}
             </button>
           </div>
         </form>
